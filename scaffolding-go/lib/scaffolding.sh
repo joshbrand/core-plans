@@ -29,7 +29,7 @@ scaffolding_load() {
 #
 
 # Path constuctor for GOPATH
-export scaffolding_go_gopath=${scaffolding_go_gopath:-"$SRC_PATH"}
+export scaffolding_go_gopath=${scaffolding_go_gopath:-"${HAB_CACHE_SRC_PATH}/go"}
 
 # Set GOPATH
 #
@@ -71,8 +71,10 @@ scaffolding_go_before() {
   # Initialize the Go Workspace package path if we are tryng to build the
   # package from local /src, that is when there is no $pkg_source set.
   if [[ ! $pkg_source ]]; then
-    mkdir -p "$scaffolding_go_pkg_path"
-    cp -r /src/* "$scaffolding_go_pkg_path"
+    mkdir -p "$scaffolding_go_workspace_src/$scaffolding_go_base_path"
+    if [[ ! -e "$scaffolding_go_pkg_path" ]]; then
+      ln -s /src "$scaffolding_go_pkg_path"
+    fi
   fi
 }
 
